@@ -1,6 +1,7 @@
 const CHOICES = ['rock', 'paper', 'scissors'];
 let humanScore = 0;
 let computerScore = 0;
+let round = 0;
 
 
 function getComputerChoice() {
@@ -19,6 +20,7 @@ function playRound(humanChoice, computerChoice) {
     }
     if (humanChoice === computerChoice) {
         console.log('Draw! No one scores!');
+        round--;
     } else if (humanChoice === `rock` && computerChoice === `scissors`) {
         win(humanChoice, computerChoice)
     } else if (humanChoice === 'scissors' && computerChoice === 'paper') {
@@ -28,6 +30,7 @@ function playRound(humanChoice, computerChoice) {
     } else {
         lose(humanChoice, computerChoice)
     }
+    round++;
     console.log(`Your score: ${humanScore}`);
     console.log(`Computer's score: ${computerScore}`);
 }
@@ -42,6 +45,8 @@ function lose(humanChoice, computerChoice) {
     computerScore++;
 }
 
-playRound(getHumanChoice(), getComputerChoice());
+while (round != 5) {
+    playRound(getHumanChoice(), getComputerChoice());
+}
 
 
