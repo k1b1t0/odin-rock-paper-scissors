@@ -2,7 +2,18 @@ const CHOICES = ['rock', 'paper', 'scissors'];
 let humanScore = 0;
 let computerScore = 0;
 let round = 0;
+let endgame = 0;
 
+const buttons = document.querySelectorAll("button")
+const resultDiv = document.querySelector("#result")
+
+for (let button of buttons) {
+    button.addEventListener("click", (event) => {
+        if (!endgame) {
+            playRound(event.target.id, getComputerChoice())
+        }
+    })
+}
 
 function getComputerChoice() {
     let index = Math.round(Math.random() * 2);
@@ -14,39 +25,46 @@ function getHumanChoice() {
 }
 
 function playRound(humanChoice, computerChoice) {
+    let result = document.createElement("p")
+
     if (!CHOICES.includes(humanChoice)) {
         console.log('Invalid input! Please try again!');
         return;
     }
     if (humanChoice === computerChoice) {
-        console.log('Draw! No one scores!');
+        result.textContent = 'Draw! No one scores!'
         round--;
     } else if (humanChoice === `rock` && computerChoice === `scissors`) {
-        win(humanChoice, computerChoice)
+        result.textContent = `You win! ${humanChoice} beats ${computerChoice}`
+        humanScore++
     } else if (humanChoice === 'scissors' && computerChoice === 'paper') {
-        win(humanChoice, computerChoice)
+        result.textContent = `You win! ${humanChoice} beats ${computerChoice}`
+        humanScore++
     } else if (humanChoice === 'paper' && computerChoice === 'rock') {
-        win(humanChoice, computerChoice)
+        result.textContent = `You win! ${humanChoice} beats ${computerChoice}`
+        humanScore++
     } else {
-        lose(humanChoice, computerChoice)
+        result.textContent = `You lost! ${computerChoice} beats ${humanChoice}`
+        computerScore++
     }
     round++;
-    console.log(`Your score: ${humanScore}`);
-    console.log(`Computer's score: ${computerScore}`);
-}
+    
+    let playerResult = document.createElement("p")
+    let computerResult = document.createElement("p")
+    playerResult.textContent = `Your score: ${humanScore}`
+    computerResult.textContent = `Computer's score: ${computerScore}`
 
-function win(humanChoice, computerChoice) {
-    console.log(`You win! ${humanChoice} beats ${computerChoice}`);
-    humanScore++;
-}
+    resultDiv.replaceChildren(result, playerResult, computerResult)
 
-function lose(humanChoice, computerChoice) {
-    console.log(`You lost! ${computerChoice} beats ${humanChoice}`);
-    computerScore++;
+    let announcement = document.createElement("h1")
+    if (humanScore === 5) {
+        announcement.textContent = 'You are the WINNER!'
+        endgame++
+        resultDiv.appendChild(announcement)
+    } else if (computerScore === 5) {
+        announcement.textContent = 'You are the LOSER!'
+        endgame++
+        resultDiv.appendChild(announcement)
+    }
 }
-
-while (round != 5) {
-    playRound(getHumanChoice(), getComputerChoice());
-}
-
 
