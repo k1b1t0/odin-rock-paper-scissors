@@ -56,15 +56,19 @@ function playRound(humanChoice, computerChoice) {
 
     resultDiv.replaceChildren(result, playerResult, computerResult)
 
-    let announcement = document.createElement("h1")
-    if (humanScore === 5) {
-        announcement.textContent = 'You are the WINNER!'
-        endgame++
-        resultDiv.appendChild(announcement)
-    } else if (computerScore === 5) {
-        announcement.textContent = 'You are the LOSER!'
-        endgame++
-        resultDiv.appendChild(announcement)
+    if (humanScore === 5 || computerScore === 5) {
+        winnerAnnounce(humanScore === 5)
     }
+}
+
+function winnerAnnounce(human) {
+    let announcement = document.createElement("h1")
+    if (human) {
+        announcement.textContent = 'You are the WINNER!'
+    } else {
+        announcement.textContent = 'You are the LOSER!'
+    }
+    endgame++
+    resultDiv.appendChild(announcement)
 }
 
